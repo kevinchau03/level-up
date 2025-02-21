@@ -1,26 +1,26 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IHabit extends Document {
-  user: Types.ObjectId;
+  user: mongoose.Types.ObjectId;
   name: string;
-  category: "Health" | "Learning" | "Productivity" | "Other";
+  category: string;
   level: number;
   xp: number;
   xpRequired: number;
   streak: number;
-  completedDates: Date[];
+  completedDates: string[];
   createdAt: Date;
 }
 
 const HabitSchema = new Schema<IHabit>({
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   name: { type: String, required: true },
-  category: { type: String, enum: ["Health", "Learning", "Productivity", "Other"], default: "Other" },
+  category: { type: String, required: true },
   level: { type: Number, default: 1 },
   xp: { type: Number, default: 0 },
   xpRequired: { type: Number, default: 100 },
   streak: { type: Number, default: 0 },
-  completedDates: [{ type: Date }],
+  completedDates: [{ type: String }],
   createdAt: { type: Date, default: Date.now },
 });
 

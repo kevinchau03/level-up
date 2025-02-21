@@ -1,22 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import client from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
+import { Db } from "mongodb";
 
-// Handle GET requests
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
   try {
-    // Connect to MongoDB
-    await client.connect();
-    const db = client.db();
+    const db: Db = await connectToDatabase();
+
+    // List all collections
     const collections = await db.listCollections().toArray();
 
-    return NextResponse.json({
-      message: "MongoDB connection successful!",
-      collections: collections.map((c) => c.name),
-    });
+    // Extract collection names
+    const collectionNames = collections.map((col: { name: any; }) => col.name);
+
+    // Return the list of collections
+    return NextResponse.json({ collections: collectionNames }, { status: 200 });
   } catch (error) {
-    console.error("Database connection error:", error);
-    return NextResponse.json({ error: "Failed to connect to database" }, { status: 500 });
-  } finally {
-    await client.close();
+    console.error("Error fetching collections:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

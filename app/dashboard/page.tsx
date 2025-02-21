@@ -1,32 +1,43 @@
+"use client";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { PlayerCard } from "../components/PlayerCard";
-import { fetchPlayer } from "../actions/fetchPlayer";
+import { SignOutButton } from "../components/SignOutButton";
+import { HabitList } from "../components/HabitList";
+import { HabitForm } from "../components/HabitForm";
 
-export default async function Dashboard() {
-    const player = await fetchPlayer("kevchau");
+export default function Dashboard() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
 
-    if (!player) {
-        return (
-          <div className="min-h-screen flex items-center justify-center text-white bg-gray-900">
-            <p className="text-xl">Player not found.</p>
-          </div>
-        );
+  const [user, setUser] = useState<{ username: string; email: string; level: number; xp: number } | null>(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      if (!userId) return;
+      const response = await fetch(`/api/users/${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setUser(data);
       }
+    }
+    fetchUser();
+  }, [userId]);
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-800 to-indigo-800">
-            <PlayerCard
-                username={player.username}
-                level={player.level}
-                streak={player.streak}
-                xp={player.xp}
-                xpRequired={500}
-                badges={[
-                    { icon: "badge1" },
-                    { icon: "badge2" },
-                    { icon: "badge3" },
-                ]}
-            />
-        </div>
-    );
+  if (!session) return <p>Please log in.</p>;
+  if (!user) return <p>Loading user data...</p>;
+
+  return (
+    <div className="w-screen h-screen flex justify-center items-center gap-4">
+      <div>
+        <PlayerCard username={user.username} level={user.level} xp={user.xp} streak={50} xpRequired={100} />
+        <HabitForm />
+      </div>
+      <div className="border-l-2 border-gray-200 h-80">
+        <HabitList />
+        <SignOutButton />
+      </div>
+    </div>
+  );
 }
-
