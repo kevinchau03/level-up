@@ -5,14 +5,11 @@ import Image from 'next/image';
 import confetti from 'canvas-confetti'
 
 export default function Home() {
-  // Track XP state
   const [xp, setXp] = useState(0);
   const [habitLevel, setHabitLevel] = useState(2);
 
-  // Calculate XP progress
   const xpProgress = Math.min((xp / 100) * 100, 100);
 
-  // Increment XP by 10
   const handleIncrement = () => {
     setXp((prevXp) => Math.min(prevXp + 10, 100));
     const audio = new Audio('/click.wav');
@@ -37,18 +34,27 @@ export default function Home() {
 
   return (
     <div className="max-w-6xl mx-auto px-4">
+      {/* Navbar */}
+      <nav className="flex justify-between items-center py-4">
+        <Link href="/" className="font-bold text-xl">LEVEL UP</Link>
+        <div className="flex gap-4">
+          <Link href="/onboarding">Start Questing</Link>
+          <Link href="/dashboard">Load Save</Link>
+          <Link href="/about">About</Link>
+        </div>
+      </nav>
       {/* Hero Section */}
-      <section className="pt-4 pb-24 md:py-24 md:mb-12 flex flex-col md:flex-row justify-center items-center md:items-start space-y-20 md:space-y-0 md:space-x-6 lg:space-x-12 text-center md:text-left">
+      <section className="h-screen flex flex-col md:flex-row justify-center items-center text-center md:text-left">
         <div className="w-full md:w-7/12 md:mr-8">
           <h1 className="font-extrabold text-4xl md:text-5xl">
             Become the <span className="text-primary">Main Character</span>
           </h1>
           <h2 className="text-lg md:text-xl">Gamify your life, turn self-improvement into a game.</h2>
           <div className="gap-4 mt-8">
-            <Link href="/onboarding" className="bg-primary py-2 px-4 rounded-lg font-bold">
+            <Link href="/onboarding" className="bg-primary p-4 rounded-lg font-bold">
               Start Questing
             </Link>
-            <Link href="/dashboard" className="py-2 px-4 rounded-lg font-bold">
+            <Link href="/dashboard" className="p-4 rounded-lg font-bold">
               Load Save
             </Link>
           </div>
@@ -110,37 +116,50 @@ export default function Home() {
             Get to where you want to be with a little help from your friends. Level up your life.
           </h3>
         </div>
+
         <div>
           <div className="flex flex-col gap-8 mt-12">
             <div className="text-left flex flex-col md:flex-row md:gap-12">
+              {/* Feature 1 */}
               <div className="text-left space-y-4 md:space-y-6">
                 <p>Your Very Own Story Line</p>
                 <h3 className="font-extrabold text-2xl">Create your own quest lines!</h3>
-                <p>Treat your goals like quests in a video game.
-                  You got your main quests long term goals and your side quests short term goals.
+                <p>Treat your goals like quests in a video game. Every completed task gets you closer to the next level.
+                  Users have the ability to choose what quests they choose to take on!
                 </p>
-                <Link href="/onboarding" className="bg-primary  py-2 px-4 rounded-lg font-bold">
-                  Start Questing
+                <Link href="/onboarding" className="bg-primary p-4 rounded-lg font-bold mt-8">
+                  Start Your Journey Now
                 </Link>
               </div>
               <div>
                 <Image src="/quests.webp" alt="quest line" width={500} height={500} />
               </div>
-            </div>
-            <div className="text-left space-y-4 md:space-y-6">
-              <p>Skills and Progression</p>
-              <h3 className="font-bold text-xl">Choose your skills and master them!</h3>
-              <p>Start building habits that stick. Track your progress, stay motivated, and level up your life.</p>
-              <Link href="/dashboard" className="py-2 px-4 rounded-lg font-bold">
-                View Skills
-              </Link>
-              <div>
-                <Image src="/skill-tree.jpg" alt="skills" width={500} height={500} />
+              {/* Feature 2 */}
+              <div className="text-left space-y-4 md:space-y-6">
+                <p>Skills and Progression</p>
+                <h3 className="font-bold text-xl">Choose your skills and master them!</h3>
+                <p>Start building habits that stick. You can choose your own skills and level them up. Each skill will help you with your quests.
+                  Keep leveling them up to become the best version of yourself.
+                </p>
+                <Link href="/dashboard" className="bg-primary p-4 rounded-lg font-bold mt-8">
+                  Create My Skills
+                </Link>
+                <div>
+                  <Image src="/skill-tree.jpg" alt="skills" width={500} height={500} />
+                </div>
               </div>
-            </div>
-            <div className="text-left space-y-4 md:space-y-6">
-              <h3 className="font-bold text-xl">🔥 Stay Motivated</h3>
-              <p>Get rewarded for your hard work. Stay motivated, build momentum, and become the best version of yourself.</p>
+              {/* Feature 3 */}
+              <div className="text-left space-y-4 md:space-y-6">
+                <p>Motivate Your Friends</p>
+                <h3 className="font-bold text-xl">Leaderboards</h3>
+                <p>To help push yourselves and others, users can add their friends to compete with eachother!</p>
+                <Link href="/dashboard" className="bg-primary p-4 rounded-lg font-bold mt-8">
+                  Create My Skills
+                </Link>
+                <div>
+                  <Image src="/skill-tree.jpg" alt="skills" width={500} height={500} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

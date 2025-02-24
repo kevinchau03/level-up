@@ -34,7 +34,7 @@ export const HabitBar: React.FC<HabitBarProps> = ({
   // Function to update XP & Level in the database
   const updateHabit = async (newXp: number, newLevel: number) => {
     try {
-      const response = await fetch(`/api/habits/update/${habitId}`, {
+      const response = await fetch(`/api/habit/update/${habitId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ xp: newXp, level: newLevel }),
@@ -48,8 +48,26 @@ export const HabitBar: React.FC<HabitBarProps> = ({
     }
   };
 
+  const deleteHabit = async () => {
+    try {
+        const response = await fetch(`/api/habit/update/${habitId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+    
+        if (!response.ok) {
+            throw new Error("Failed to delete habit");
+        }
+        }
+        catch (error) {
+        console.error("❌ Error deleting habit:", error);
+        }
+    };
+
   // Increment XP when button is clicked
   const handleIncrement = async () => {
+    const audio = new Audio("/click.wav");
+    audio.play();
     let newXp = xp + 20;
     let newLevel = habitLevel;
 
@@ -102,6 +120,12 @@ export const HabitBar: React.FC<HabitBarProps> = ({
       >
         ✅
       </button>
+      <button
+        onClick={deleteHabit}
+        className="mt-3 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+        >
+        Delete
+        </button>
     </div>
   );
 };
